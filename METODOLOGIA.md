@@ -17,8 +17,8 @@ Demonstrar através de dados quantitativos qual interface oferece:
 ### 📊 Como Funciona o Teste A/B
 
 1. **Divisão Aleatória**: Os usuários são automaticamente direcionados para uma das duas versões:
-   - **Versão A**: Interface atual (estilo tradicional)
-   - **Versão B**: Nova interface proposta (design otimizado)
+   - **Versão A**: Interface atual (botões coloridos e desalinhados)
+   - **Versão B**: Nova interface proposta (padrão de mercado, reduz carga mental)
 
 2. **Coleta de Dados Anônimos**:
    - ⏱️ **Tempo de interação**: Medido automaticamente
@@ -28,8 +28,8 @@ Demonstrar através de dados quantitativos qual interface oferece:
 
 3. **Ferramentas de Análise**:
    - **Microsoft Clarity**: Gravações de sessão (com mascaramento de dados sensíveis)
-   - **Google Analytics**: Métricas de comportamento
-   - **Google Sheets**: Consolidação de dados via Apps Script
+   - **Google Sheets + Apps Script**: Consolidação e análise de dados
+   - **Angular**: Framework desenvolvido com auxílio de IA
 
 ### 🔒 Privacidade e Segurança
 
@@ -44,20 +44,38 @@ Demonstrar através de dados quantitativos qual interface oferece:
 ## 🎨 As Duas Interfaces
 
 ### Versão A - Interface Atual
-- **Estilo**: Design tradicional com teclado numérico
-- **Layout**: Botões grandes e coloridos
+- **Estilo**: Botões coloridos e desalinhados
+- **Layout**: Teclado numérico com cores vibrantes
 - **Feedback**: Visual imediato da digitação
-- **Características**: Interface familiar, estilo "caixa eletrônico"
+- **Características**: Interface com múltiplas cores, botões de tamanhos diferentes
 
 ### Versão B - Nova Interface Proposta
-- **Estilo**: Design moderno e minimalista
+- **Estilo**: Padrão de mercado, design limpo
 - **Layout**: Teclado numérico organizado em grid 3x3
 - **Feedback**: Visualização progressiva com placeholders
-- **Características**: Interface limpa, foco na usabilidade
+- **Características**: Interface minimalista, reduz carga mental do usuário
 
 ---
 
-## 📈 Como os Dados Serão Analisados
+## 🤖 Desenvolvimento com Inteligência Artificial
+
+### Tecnologia Utilizada
+Este projeto foi desenvolvido utilizando **Inteligência Artificial** como ferramenta de desenvolvimento, demonstrando como a IA pode acelerar e otimizar o processo de criação de interfaces de usuário.
+
+### Benefícios da IA no Desenvolvimento
+- ⚡ **Desenvolvimento Acelerado**: Redução significativa no tempo de codificação
+- 🎯 **Código Otimizado**: Implementação de melhores práticas automaticamente
+- 🔧 **Debugging Inteligente**: Identificação e correção de problemas
+- 📚 **Documentação Automática**: Geração de documentação técnica
+
+### Stack Tecnológica
+- **Frontend**: Angular (desenvolvido com IA)
+- **Analytics**: Microsoft Clarity
+- **Dados**: Google Sheets + Apps Script
+- **Deploy**: GitHub Pages + GitHub Actions
+- **IA**: Assistente de desenvolvimento para código e documentação
+
+---
 
 ### Métricas Principais
 1. **Tempo Total de Interação** (segundos)
