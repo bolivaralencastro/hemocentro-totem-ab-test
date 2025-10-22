@@ -41,7 +41,7 @@ jobs:
 
       - name: Build Angular App
         # IMPORTANTE: O --base-href deve corresponder ao nome do seu repositório
-        run: npm run build -- --base-href /hemocentro-cpf-input-test/
+        run: npm run build -- --base-href /hemocentro-totem-ab-test/
 
       - name: Set up Pages
         uses: actions/configure-pages@v5
@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Faz o upload do diretório de build gerado pelo Angular
-          path: './dist/hemocentro-cpf-input-test/browser'
+          path: './dist/hemocentro-totem-ab-test/browser'
 
       - name: Deploy to GitHub Pages
         id: deployment

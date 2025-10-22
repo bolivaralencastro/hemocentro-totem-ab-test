@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/hemocentro-cpf-input-test",
+            "outputPath": "dist/hemocentro-totem-ab-test",
             "index": "index.html",
             "browser": "src/main.ts",
             "polyfills": [],
