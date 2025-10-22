@@ -1,0 +1,36 @@
+<div class="w-full p-8 text-center flex flex-col items-center justify-center">
+  @if (!showCenters()) {
+    <div class="animate-fade-in">
+      <svg class="w-20 h-20 text-red-500 mb-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+      <h1 class="text-3xl font-bold text-slate-800 mb-2">Doe Sangue, Salve Vidas!</h1>
+      <p class="text-lg text-gray-600 leading-relaxed mb-8">
+        Sua ajuda com esta pesquisa foi fundamental. Agora, que tal dar o próximo passo para salvar vidas de verdade? Um simples gesto de doação pode beneficiar até quatro pessoas. É rápido, seguro e faz uma diferença enorme.
+      </p>
+      <button (click)="toggleCenters()" class="bg-red-600 text-white font-bold py-3 px-10 rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 text-lg">
+        Quero doar também!
+      </button>
+    </div>
+  } @else {
+    <div class="w-full animate-fade-in">
+      <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-6">Encontre o Hemocentro mais próximo</h2>
+      <div class="border border-gray-200 rounded-lg max-h-80 overflow-y-auto text-left">
+        <ul class="divide-y divide-gray-200">
+          @for (center of donationCenters; track center.city) {
+            <li class="p-4 hover:bg-gray-50 transition-colors duration-150">
+              <a [href]="center.url" (click)="onCenterClick(center)" target="_blank" rel="noopener noreferrer" class="flex justify-between items-center w-full">
+                <div>
+                  <p class="font-semibold text-slate-700">{{ center.city }}</p>
+                  <p class="text-sm text-gray-500">{{ center.name }}</p>
+                </div>
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+       <p class="text-sm text-gray-500 mt-4">
+        Agradeço seu interesse em doar sangue. É um gesto que faz toda a diferença!
+      </p>
+    </div>
+  }
+</div>

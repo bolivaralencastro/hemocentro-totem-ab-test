@@ -1,0 +1,46 @@
+<div class="w-full p-8 text-center flex flex-col items-center justify-center">
+  @if (displayMode() === 'success') {
+    <svg class="w-20 h-20 text-green-500 mb-4" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9.01l-8 8z"/>
+    </svg>
+    <h1 class="text-3xl font-bold text-slate-800 mb-2">{{ title() }}</h1>
+  } @else {
+    <svg class="w-20 h-20 text-blue-500 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <h1 class="text-3xl font-bold text-slate-800 mb-4">Próxima Etapa</h1>
+  }
+
+  <p class="text-lg text-gray-600 leading-relaxed">{{ message() }}</p>
+
+  @if (timeA() !== null && timeB() !== null) {
+    <div class="mt-8 pt-6 border-t border-gray-200 w-full">
+      <div class="grid grid-cols-3 gap-4 text-center">
+        <div>
+          <div class="text-sm font-medium text-gray-500">Interface Original</div>
+          <div class="text-2xl font-bold text-slate-800">{{ formattedTimeA() }}s</div>
+        </div>
+        <div>
+          <div class="text-sm font-medium text-gray-500">Nova Interface</div>
+          <div class="text-2xl font-bold text-slate-800">{{ formattedTimeB() }}s</div>
+        </div>
+        @if (timeDifference(); as diff) {
+          <div>
+            <div class="text-sm font-medium text-gray-500">{{ diff.label }}</div>
+            <div class="text-2xl font-bold"
+                 [class.text-green-600]="diff.isImprovement === true"
+                 [class.text-orange-600]="diff.isImprovement === false"
+                 [class.text-slate-700]="diff.isImprovement === null">
+              {{ diff.value }}
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+  @if (showContinueButton()) {
+    <div class="mt-8 w-full flex flex-col items-center gap-4">
+      <button (click)="continueClicked.emit()" class="w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-10 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 text-lg">
+        {{ buttonText() }}
+      </button>
+    </div>
+  }
+</div>

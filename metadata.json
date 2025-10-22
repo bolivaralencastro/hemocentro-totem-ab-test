@@ -1,0 +1,5 @@
+{
+  "name": "Copy of  Hemocentro Totem A/B Test - Correto",
+  "description": "This is my personal project to conduct an A/B test for the Hemocentro's self-service totem. I'm capturing user interaction timing to compare the current interface with a new one I designed, aiming to improve the user experience. No personal data is stored.",
+  "requestFramePermissions": []
+}

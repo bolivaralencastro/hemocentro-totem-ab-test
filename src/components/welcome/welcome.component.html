@@ -1,0 +1,19 @@
+<div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 text-center border border-gray-200 flex flex-col items-center justify-center animate-fade-in">
+  <h1 class="text-3xl sm:text-4xl font-bold text-slate-800 mb-4">Ajude a Melhorar a Experiência do Doador</h1>
+  <p class="text-lg text-gray-600 leading-relaxed mb-6">
+    Olá! Sua ajuda é fundamental para aprimorar a interface do totem de autoatendimento do Hemocentro. Você testará duas versões da tela de digitação de CPF. Esta pesquisa é totalmente anônima e nenhum dado pessoal, como o CPF digitado, será coletado.
+  </p>
+  
+  <button (click)="onStart()" class="w-full sm:w-auto bg-blue-600 text-white font-bold py-4 px-12 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 text-xl mb-4">
+    Começar Teste
+  </button>
+
+  <p class="text-xs text-gray-500">
+    Ao clicar em "Começar Teste", você concorda com os 
+    <button (click)="toggleTerms(true)" class="text-blue-600 hover:underline focus:outline-none">Termos de Uso</button>.
+  </p>
+</div>
+
+@if (showTerms()) {
+  <app-terms-dialog (close)="toggleTerms(false)"></app-terms-dialog>
+}
