@@ -54,22 +54,30 @@ function isValidData(data) {
         typeof data.errorsA !== 'number' || 
         typeof data.errorsB !== 'number' || 
         typeof data.order !== 'string' || 
-        typeof data.timeDifference !== 'number') {
+        typeof data.timeDifference !== 'number' ||
+        (data.scoreA !== null && typeof data.scoreA !== 'number') ||
+        (data.scoreB !== null && typeof data.scoreB !== 'number') ||
+        typeof data.feedback !== 'string') {
       return false;
     }
     
     // Validate ranges for test timing data
-    if (data.timeA < 1000 || data.timeA > 7200000) return false; // 1 second to 2 hours - reasonable for CPF entry
+    if (data.timeA < 1000 || data.timeA > 7200000) return false; // 1 second to 2 hours
     if (data.timeB < 1000 || data.timeB > 7200000) return false; // 1 second to 2 hours
     if (data.errorsA < 0 || data.errorsA > 100) return false; // Reasonable error count
     if (data.errorsB < 0 || data.errorsB > 100) return false; // Reasonable error count
     if (Math.abs(data.timeDifference) > 7200000) return false; // 2 hours max difference
     
+    // Validate survey data
+    if (data.scoreA !== null && (data.scoreA < 1 || data.scoreA > 5)) return false;
+    if (data.scoreB !== null && (data.scoreB < 1 || data.scoreB > 5)) return false;
+    if (data.feedback.length > 5000) return false; // Limit feedback length
+
     // Validate order string
     if (!['Original > Nova', 'Nova > Original'].includes(data.order)) return false;
     
     // Check for unexpected properties (prevent injection of extra fields)
-    var allowedTestKeys = ['timeA', 'timeB', 'errorsA', 'errorsB', 'order', 'timeDifference'];
+    var allowedTestKeys = ['timeA', 'timeB', 'errorsA', 'errorsB', 'order', 'timeDifference', 'scoreA', 'scoreB', 'feedback'];
     for (var key in data) {
       if (!allowedTestKeys.includes(key)) return false;
     }
@@ -273,7 +281,10 @@ function doPost(e) {
         'Time Difference (ms)',
         'Errors Original',
         'Errors Nova',
-        'Test Order'
+        'Test Order',
+        'Score Original',
+        'Score Nova',
+        'Feedback'
       ];
       var testSheet = getSheet('TestResults', testSheetHeaders);
 
@@ -284,7 +295,10 @@ function doPost(e) {
         data.timeDifference,
         data.errorsA,
         data.errorsB,
-        data.order
+        data.order,
+        data.scoreA,
+        data.scoreB,
+        data.feedback
       ]);
 
     } else if (data.clickedCenter !== undefined) {

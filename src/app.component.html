@@ -55,13 +55,14 @@
                 message="Muito obrigado! Sua participação foi fundamental para aprimorar a experiência dos doadores de sangue."
                 [timeA]="timeTestA()"
                 [timeB]="timeTestB()"
-                [showContinueButton]="false">
+                (surveySubmitted)="onSurveySubmitted($event)">
               </app-success>
             </div>
+          } @else {
+            <div class="bg-gray-50">
+              <app-donation-info (findCenterClicked)="onFindCenterClick()"></app-donation-info>
+            </div>
           }
-          <div class="bg-gray-50">
-            <app-donation-info (findCenterClicked)="onFindCenterClick()"></app-donation-info>
-          </div>
         </div>
       }
     }

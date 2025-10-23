@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class DataLoggerService {
   // IMPORTANT: Replace this placeholder with the actual Web App URL you got from Google Apps Script deployment.
-  private readonly LOGGING_URL = 'https://script.google.com/macros/s/AKfycbwzMnn6P6g6xy5OAMJJGul8kgGi6vQDVuNdwwojjkLq-x-Ze5yYQ2i3UsBHQr6mKuQW/exec';
+  private readonly LOGGING_URL = 'https://script.google.com/macros/s/AKfycbylROtexe-pjqxANXO2HtkvHRYHC4qZBUrgrWlyE-tgY-vuj4WEwb51QCKjwG0DyOGm/exec';
 
   private async postData(payload: object): Promise<void> {
     try {
@@ -23,8 +23,8 @@ export class DataLoggerService {
     }
   }
   
-  async logTimings(timeA: number, timeB: number, errorsA: number, errorsB: number, order: string, timeDifference: number): Promise<void> {
-    return this.postData({ timeA, timeB, errorsA, errorsB, order, timeDifference });
+  async logSurveyResults(timeA: number, timeB: number, errorsA: number, errorsB: number, order: string, timeDifference: number, scoreA: number | null, scoreB: number | null, feedback: string): Promise<void> {
+    return this.postData({ timeA, timeB, errorsA, errorsB, order, timeDifference, scoreA, scoreB, feedback });
   }
 
   async logHemocentroClick(center: { city: string, name: string }): Promise<void> {

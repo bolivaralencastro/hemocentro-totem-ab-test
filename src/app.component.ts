@@ -126,7 +126,9 @@ export class AppComponent implements OnInit {
     }
     this.currentTest.set('Finished');
     this.showSuccessInfo.set(true);
+  }
 
+  onSurveySubmitted(surveyData: { scoreA: number | null, scoreB: number | null, feedback: string }): void {
     const timeA = this.timeTestA();
     const timeB = this.timeTestB();
     const errorsA = this.errorsTestA();
@@ -136,8 +138,10 @@ export class AppComponent implements OnInit {
     if (timeA !== null && timeB !== null && errorsA !== null && errorsB !== null && order !== null) {
       const timeDifference = timeA - timeB; // Positive means Original was slower
       const explicitOrder = order === 'AB' ? 'Original > Nova' : 'Nova > Original';
-      void this.dataLogger.logTimings(timeA, timeB, errorsA, errorsB, explicitOrder, timeDifference);
+      void this.dataLogger.logSurveyResults(timeA, timeB, errorsA, errorsB, explicitOrder, timeDifference, surveyData.scoreA, surveyData.scoreB, surveyData.feedback);
     }
+
+    this.showSuccessInfo.set(false);
   }
 
   onFindCenterClick(): void {
