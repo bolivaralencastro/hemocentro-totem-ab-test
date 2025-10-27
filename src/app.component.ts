@@ -134,11 +134,13 @@ export class AppComponent implements OnInit {
     const errorsA = this.errorsTestA();
     const errorsB = this.errorsTestB();
     const order = this.testOrder();
+    const deviceType = this.isMobile() ? 'Mobile' : 'Desktop';
+    const feedbackWithDevice = `[device:${deviceType}]${surveyData.feedback ? ` ${surveyData.feedback}` : ''}`;
 
     if (timeA !== null && timeB !== null && errorsA !== null && errorsB !== null && order !== null) {
       const timeDifference = timeA - timeB; // Positive means Original was slower
       const explicitOrder = order === 'AB' ? 'Original > Nova' : 'Nova > Original';
-      void this.dataLogger.logSurveyResults(timeA, timeB, errorsA, errorsB, explicitOrder, timeDifference, surveyData.scoreA, surveyData.scoreB, surveyData.feedback);
+      void this.dataLogger.logSurveyResults(timeA, timeB, errorsA, errorsB, explicitOrder, timeDifference, surveyData.scoreA, surveyData.scoreB, feedbackWithDevice);
     }
 
     this.showSuccessInfo.set(false);
