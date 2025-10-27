@@ -37,47 +37,44 @@
     </div>
   }
   @if (displayMode() === 'success') {
-    <div class="mt-8 pt-6 border-t border-gray-200 w-full text-left">
-      <h2 class="text-xl font-bold text-slate-800 mb-4 text-center">Avalie sua Experiência</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-        <fieldset class="flex flex-col items-center">
-          <legend class="text-lg font-medium text-gray-600 mb-2">Interface Original</legend>
-          <span class="text-sm text-gray-500 mb-2">Tela com botões coloridos que ocupa a tela inteira.</span>
-          <div class="flex items-center justify-center space-x-1">
-            @for (star of [1, 2, 3, 4, 5]; track star) {
-              <label class="cursor-pointer text-4xl" [class.text-yellow-400]="(scoreA() ?? 0) >= star" [class.text-gray-300]="(scoreA() ?? 0) < star">
-                <input type="radio" name="scoreA" [value]="star" (change)="scoreA.set(star)" class="sr-only">★
-              </label>
-            }
-          </div>
-        </fieldset>
-        <fieldset class="flex flex-col items-center">
-          <legend class="text-lg font-medium text-gray-600 mb-2">Nova Interface</legend>
-          <span class="text-sm text-gray-500 mb-2">Tela centralizada com botões organizados em grade.</span>
-          <div class="flex items-center justify-center space-x-1">
-            @for (star of [1, 2, 3, 4, 5]; track star) {
-              <label class="cursor-pointer text-4xl" [class.text-yellow-400]="(scoreB() ?? 0) >= star" [class.text-gray-300]="(scoreB() ?? 0) < star">
-                <input type="radio" name="scoreB" [value]="star" (change)="scoreB.set(star)" class="sr-only">★
-              </label>
-            }
-          </div>
-        </fieldset>
+    @if (originalScore() !== null || newScore() !== null) {
+      <div class="mt-8 pt-6 border-t border-gray-200 w-full">
+        <h2 class="text-xl font-bold text-slate-800 mb-6 text-center">Como você avaliou as interfaces</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          @if (originalScore() !== null) {
+            <div class="flex flex-col items-center gap-2">
+              <span class="text-lg font-medium text-gray-600">Interface Original</span>
+              <span class="text-sm text-gray-500">Tela com botões coloridos que ocupa a tela inteira.</span>
+              <div class="flex items-center gap-1 text-3xl">
+                @for (star of stars; track star) {
+                  <span [class.text-yellow-400]="(originalScore() ?? 0) >= star" [class.text-gray-300]="(originalScore() ?? 0) < star">★</span>
+                }
+              </div>
+              <span class="text-sm text-gray-500">{{ originalScore() }} de 5</span>
+            </div>
+          }
+          @if (newScore() !== null) {
+            <div class="flex flex-col items-center gap-2">
+              <span class="text-lg font-medium text-gray-600">Nova Interface</span>
+              <span class="text-sm text-gray-500">Tela centralizada com botões organizados em grade.</span>
+              <div class="flex items-center gap-1 text-3xl">
+                @for (star of stars; track star) {
+                  <span [class.text-yellow-400]="(newScore() ?? 0) >= star" [class.text-gray-300]="(newScore() ?? 0) < star">★</span>
+                }
+              </div>
+              <span class="text-sm text-gray-500">{{ newScore() }} de 5</span>
+            </div>
+          }
+        </div>
       </div>
-      <div class="mb-6">
-        <label for="feedback" class="block text-lg font-medium text-gray-600 mb-2 text-center">Sugestões ou Comentários</label>
-        <textarea id="feedback" #feedbackInput (input)="feedback.set(feedbackInput.value)" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
-      </div>
-      <div class="w-full flex flex-col items-center gap-4">
-        <button (click)="submitSurvey()" [disabled]="!(scoreA() && scoreB())" class="w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-10 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 text-lg disabled:bg-gray-400 disabled:cursor-not-allowed">
-          Enviar Avaliação
+    }
+    @if (showContinueButton()) {
+      <div class="mt-8 w-full flex flex-col items-center gap-4">
+        <button (click)="continueClicked.emit()" class="w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-10 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 text-lg">
+          {{ buttonText() }}
         </button>
-        @if (!(scoreA() && scoreB())) {
-          <p class="text-sm text-gray-600 text-center">
-            Selecione a pontuação das interfaces para enviar sua avaliação.
-          </p>
-        }
       </div>
-    </div>
+    }
   } @else if (showContinueButton()) {
     <div class="mt-8 w-full flex flex-col items-center gap-4">
       <button (click)="continueClicked.emit()" class="w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-10 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 text-lg">

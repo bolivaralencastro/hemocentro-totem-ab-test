@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input, computed, output, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, computed, output } from '@angular/core';
 
 @Component({
   selector: 'app-success',
@@ -14,20 +14,8 @@ export class SuccessComponent {
   displayMode = input<'success' | 'transition'>('success');
   showContinueButton = input<boolean>(true);
   continueClicked = output<void>();
-
-  scoreA = signal<number | null>(null);
-  scoreB = signal<number | null>(null);
-  feedback = signal('');
-
-  surveySubmitted = output<{ scoreA: number | null, scoreB: number | null, feedback: string }>();
-
-  submitSurvey(): void {
-    this.surveySubmitted.emit({
-      scoreA: this.scoreA(),
-      scoreB: this.scoreB(),
-      feedback: this.feedback(),
-    });
-  }
+  originalScore = input<number | null>(null);
+  newScore = input<number | null>(null);
 
   private formatTime(ms: number | null): string | null {
     if (ms === null) {
@@ -70,4 +58,6 @@ export class SuccessComponent {
       };
     }
   });
+
+  stars = [1, 2, 3, 4, 5] as const;
 }
