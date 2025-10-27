@@ -7,14 +7,22 @@ import { DataLoggerService } from './services/data-logger.service';
 import { DonationInfoComponent } from './components/donation-info/donation-info.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { ClarityService } from './services/clarity.service';
+import { InterfaceFeedbackComponent } from './components/interface-feedback/interface-feedback.component';
 
-type AppState = 'Welcome' | 'Test1' | 'Test2' | 'Transition' | 'Finished';
+type AppState = 'Welcome' | 'Test1' | 'Feedback1' | 'Test2' | 'Feedback2' | 'Finished';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [WelcomeComponent, VersionAComponent, VersionBComponent, SuccessComponent, DonationInfoComponent],
+  imports: [
+    WelcomeComponent,
+    VersionAComponent,
+    VersionBComponent,
+    SuccessComponent,
+    DonationInfoComponent,
+    InterfaceFeedbackComponent,
+  ],
 })
 export class AppComponent implements OnInit {
   private readonly dataLogger = inject(DataLoggerService);
@@ -28,6 +36,11 @@ export class AppComponent implements OnInit {
   isMobile = signal(false);
   testOrder = signal<'AB' | 'BA' | null>(null);
   showSuccessInfo = signal(true);
+  scoreA = signal<number | null>(null);
+  scoreB = signal<number | null>(null);
+  feedbackA = signal('');
+  feedbackB = signal('');
+  lastCompletedInterface = signal<'A' | 'B' | null>(null);
 
   private startTime!: number;
 
@@ -42,7 +55,7 @@ export class AppComponent implements OnInit {
       return 'bg-[#49455a] h-screen font-sans';
     }
     
-    const centeredStates: AppState[] = ['Welcome', 'Test1', 'Test2', 'Transition', 'Finished'];
+    const centeredStates: AppState[] = ['Welcome', 'Test1', 'Feedback1', 'Test2', 'Feedback2', 'Finished'];
     if (centeredStates.includes(this.currentTest())) {
       return 'bg-gray-100 flex justify-center items-center min-h-screen p-4 md:p-8 font-sans';
     }
@@ -63,7 +76,7 @@ export class AppComponent implements OnInit {
       const state = this.currentTest();
       // FIX: Explicitly type `viewName` as a string. This allows assigning more descriptive names for analytics
       // that are not part of the AppState type, resolving the type error.
-      let viewName: string = state; // Default to the state name (e.g., 'Welcome', 'Transition')
+      let viewName: string = state; // Default to the state name (e.g., 'Welcome', 'Feedback1')
 
       switch (state) {
         case 'Test1':
@@ -73,6 +86,12 @@ export class AppComponent implements OnInit {
         case 'Test2':
           // Identify the second test view
           viewName = this.testOrder() === 'AB' ? 'Test_VersionB' : 'Test_VersionA';
+          break;
+        case 'Feedback1':
+          viewName = this.testOrder() === 'AB' ? 'Feedback_VersionA' : 'Feedback_VersionB';
+          break;
+        case 'Feedback2':
+          viewName = this.testOrder() === 'AB' ? 'Feedback_VersionB' : 'Feedback_VersionA';
           break;
         case 'Finished':
           // Differentiate between the final success message and the donation center list
@@ -93,6 +112,16 @@ export class AppComponent implements OnInit {
   onStartTest(): void {
     this.testOrder.set(Math.random() < 0.5 ? 'AB' : 'BA');
     this.startTime = Date.now();
+    this.timeTestA.set(null);
+    this.timeTestB.set(null);
+    this.errorsTestA.set(null);
+    this.errorsTestB.set(null);
+    this.scoreA.set(null);
+    this.scoreB.set(null);
+    this.feedbackA.set('');
+    this.feedbackB.set('');
+    this.lastCompletedInterface.set(null);
+    this.showSuccessInfo.set(true);
     this.currentTest.set('Test1');
   }
 
@@ -102,16 +131,13 @@ export class AppComponent implements OnInit {
     if (this.testOrder() === 'AB') {
       this.timeTestA.set(duration);
       this.errorsTestA.set(errorCount);
+      this.lastCompletedInterface.set('A');
     } else {
       this.timeTestB.set(duration);
       this.errorsTestB.set(errorCount);
+      this.lastCompletedInterface.set('B');
     }
-    this.currentTest.set('Transition');
-  }
-
-  onStartTest2(): void {
-    this.startTime = Date.now(); // Reset timer for the second test
-    this.currentTest.set('Test2');
+    this.currentTest.set('Feedback1');
   }
 
   onTest2Completed(errorCount: number): void {
@@ -120,30 +146,93 @@ export class AppComponent implements OnInit {
     if (this.testOrder() === 'AB') {
       this.timeTestB.set(duration);
       this.errorsTestB.set(errorCount);
+      this.lastCompletedInterface.set('B');
     } else {
       this.timeTestA.set(duration);
       this.errorsTestA.set(errorCount);
+      this.lastCompletedInterface.set('A');
     }
-    this.currentTest.set('Finished');
-    this.showSuccessInfo.set(true);
+    this.currentTest.set('Feedback2');
   }
 
-  onSurveySubmitted(surveyData: { scoreA: number | null, scoreB: number | null, feedback: string }): void {
+  onFirstFeedbackSubmitted(feedback: { score: number; feedback: string }): void {
+    const order = this.testOrder();
+    if (order === null) {
+      return;
+    }
+
+    if (order === 'AB') {
+      this.scoreA.set(feedback.score);
+      this.feedbackA.set(feedback.feedback);
+    } else {
+      this.scoreB.set(feedback.score);
+      this.feedbackB.set(feedback.feedback);
+    }
+
+    this.startTime = Date.now();
+    this.currentTest.set('Test2');
+  }
+
+  onSecondFeedbackSubmitted(feedback: { score: number; feedback: string }): void {
+    const order = this.testOrder();
+    if (order === null) {
+      return;
+    }
+
+    if (order === 'AB') {
+      this.scoreB.set(feedback.score);
+      this.feedbackB.set(feedback.feedback);
+    } else {
+      this.scoreA.set(feedback.score);
+      this.feedbackA.set(feedback.feedback);
+    }
+
+    this.currentTest.set('Finished');
+    this.showSuccessInfo.set(true);
+    this.logSurveyResults();
+  }
+
+  private logSurveyResults(): void {
     const timeA = this.timeTestA();
     const timeB = this.timeTestB();
     const errorsA = this.errorsTestA();
     const errorsB = this.errorsTestB();
     const order = this.testOrder();
-    const deviceType = this.isMobile() ? 'Mobile' : 'Desktop';
-    const feedbackWithDevice = `[device:${deviceType}]${surveyData.feedback ? ` ${surveyData.feedback}` : ''}`;
 
-    if (timeA !== null && timeB !== null && errorsA !== null && errorsB !== null && order !== null) {
-      const timeDifference = timeA - timeB; // Positive means Original was slower
-      const explicitOrder = order === 'AB' ? 'Original > Nova' : 'Nova > Original';
-      void this.dataLogger.logSurveyResults(timeA, timeB, errorsA, errorsB, explicitOrder, timeDifference, surveyData.scoreA, surveyData.scoreB, feedbackWithDevice);
+    if (timeA === null || timeB === null || errorsA === null || errorsB === null || order === null) {
+      return;
     }
 
-    this.showSuccessInfo.set(false);
+    const timeDifference = timeA - timeB; // Positive means Original was slower
+    const explicitOrder = order === 'AB' ? 'Original > Nova' : 'Nova > Original';
+    const deviceType = this.isMobile() ? 'Mobile' : 'Desktop';
+
+    const feedbackSegments: string[] = [];
+    const feedbackOriginal = this.feedbackA().trim();
+    const feedbackNew = this.feedbackB().trim();
+
+    if (feedbackOriginal.length > 0) {
+      feedbackSegments.push(`[Original] ${feedbackOriginal}`);
+    }
+
+    if (feedbackNew.length > 0) {
+      feedbackSegments.push(`[Nova] ${feedbackNew}`);
+    }
+
+    const combinedFeedback = feedbackSegments.join(' | ');
+    const feedbackWithDevice = `[device:${deviceType}]${combinedFeedback ? ` ${combinedFeedback}` : ''}`;
+
+    void this.dataLogger.logSurveyResults(
+      timeA,
+      timeB,
+      errorsA,
+      errorsB,
+      explicitOrder,
+      timeDifference,
+      this.scoreA(),
+      this.scoreB(),
+      feedbackWithDevice,
+    );
   }
 
   onFindCenterClick(): void {

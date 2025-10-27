@@ -32,6 +32,31 @@
           <app-version-b (completed)="onTest1Completed($event)"></app-version-b>
         }
       }
+      @case ('Feedback1') {
+        @if (lastCompletedInterface() === 'A') {
+          <app-interface-feedback
+            title="Avalie a Interface Original"
+            description="Tela com botões coloridos que ocupa a tela inteira."
+            helperText="Sua opinião é importante para melhorar esta versão."
+            continueLabel="Continuar para a próxima interface"
+            [initialScore]="scoreA()"
+            [initialComment]="feedbackA()"
+            (submitFeedback)="onFirstFeedbackSubmitted($event)"
+          ></app-interface-feedback>
+        } @else if (lastCompletedInterface() === 'B') {
+          <app-interface-feedback
+            title="Avalie a Nova Interface"
+            description="Tela centralizada com botões organizados em grade."
+            helperText="Compartilhe como foi sua experiência com esta tela."
+            continueLabel="Continuar para a próxima interface"
+            [initialScore]="scoreB()"
+            [initialComment]="feedbackB()"
+            (submitFeedback)="onFirstFeedbackSubmitted($event)"
+          ></app-interface-feedback>
+        } @else {
+          <div class="text-center text-gray-600">Carregando informações da interface...</div>
+        }
+      }
       @case ('Test2') {
         @if (testOrder() === 'AB') {
           <app-version-b (completed)="onTest2Completed($event)"></app-version-b>
@@ -39,26 +64,44 @@
           <app-version-a (completed)="onTest2Completed($event)"></app-version-a>
         }
       }
-      @case ('Transition') {
-        <div class="w-full max-w-lg bg-white rounded-2xl shadow-xl border border-gray-200">
-          <app-success 
-            displayMode="transition"
-            title=""
-            message="Obrigado por concluir a primeira parte! Clique em continuar para a próxima etapa do teste."
-            (continueClicked)="onStartTest2()">
-          </app-success>
-        </div>
+      @case ('Feedback2') {
+        @if (lastCompletedInterface() === 'B') {
+          <app-interface-feedback
+            title="Avalie a Nova Interface"
+            description="Tela centralizada com botões organizados em grade."
+            helperText="Conte o que funcionou bem ou o que poderia melhorar."
+            continueLabel="Finalizar avaliação"
+            [initialScore]="scoreB()"
+            [initialComment]="feedbackB()"
+            (submitFeedback)="onSecondFeedbackSubmitted($event)"
+          ></app-interface-feedback>
+        } @else if (lastCompletedInterface() === 'A') {
+          <app-interface-feedback
+            title="Avalie a Interface Original"
+            description="Tela com botões coloridos que ocupa a tela inteira."
+            helperText="Sua percepção nos ajuda a evoluir esta versão."
+            continueLabel="Finalizar avaliação"
+            [initialScore]="scoreA()"
+            [initialComment]="feedbackA()"
+            (submitFeedback)="onSecondFeedbackSubmitted($event)"
+          ></app-interface-feedback>
+        } @else {
+          <div class="text-center text-gray-600">Carregando informações da interface...</div>
+        }
       }
       @case ('Finished') {
         <div class="w-full max-w-lg mx-auto animate-fade-in bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden flex flex-col">
           @if (showSuccessInfo()) {
             <div class="border-b border-gray-200">
-              <app-success 
-                title="Teste Concluído!" 
+              <app-success
+                title="Teste Concluído!"
                 message="Muito obrigado! Sua participação foi fundamental para aprimorar a experiência dos doadores de sangue."
                 [timeA]="timeTestA()"
                 [timeB]="timeTestB()"
-                (surveySubmitted)="onSurveySubmitted($event)">
+                [originalScore]="scoreA()"
+                [newScore]="scoreB()"
+                buttonText="Ver locais para doar sangue"
+                (continueClicked)="onFindCenterClick()">
               </app-success>
             </div>
           } @else {

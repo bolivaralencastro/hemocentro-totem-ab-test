@@ -1,0 +1,52 @@
+<div class="w-full max-w-lg mx-auto bg-white rounded-2xl shadow-xl border border-gray-200 p-8 flex flex-col gap-6">
+  <div class="text-center flex flex-col gap-2">
+    <h1 class="text-3xl font-bold text-slate-800">{{ title() }}</h1>
+    @if (description()) {
+      <p class="text-lg text-gray-600 leading-relaxed">{{ description() }}</p>
+    }
+    @if (helperText()) {
+      <p class="text-sm text-gray-500">{{ helperText() }}</p>
+    }
+  </div>
+
+  <div class="flex flex-col items-center gap-4">
+    <div class="flex items-center justify-center space-x-1 text-4xl">
+      @for (star of [1, 2, 3, 4, 5]; track star) {
+        <button type="button"
+                (click)="setScore(star)"
+                class="transition-colors"
+                [class.text-yellow-400]="(score() ?? 0) >= star"
+                [class.text-gray-300]="(score() ?? 0) < star">
+          ★
+        </button>
+      }
+    </div>
+    <span class="text-sm text-gray-500">1 = Muito ruim · 5 = Excelente</span>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label for="comment" class="text-lg font-medium text-gray-600 text-center">Deixe seus comentários</label>
+    <textarea
+      id="comment"
+      rows="4"
+      class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+      [value]="comment()"
+      (input)="onCommentChange(($event.target as HTMLTextAreaElement).value)"
+      placeholder="O que mais chamou sua atenção nesta interface?"
+    ></textarea>
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <button type="button"
+            (click)="onSubmit()"
+            [disabled]="!canSubmit()"
+            class="w-full bg-blue-600 text-white font-bold py-3 px-10 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 text-lg disabled:bg-gray-400 disabled:cursor-not-allowed">
+      {{ continueLabel() }}
+    </button>
+    @if (!canSubmit()) {
+      <p class="text-sm text-gray-600 text-center">
+        Selecione uma pontuação para continuar.
+      </p>
+    }
+  </div>
+</div>
