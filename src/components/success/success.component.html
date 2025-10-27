@@ -71,6 +71,11 @@
         <button (click)="submitSurvey()" [disabled]="!(scoreA() && scoreB())" class="w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-10 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 text-lg disabled:bg-gray-400 disabled:cursor-not-allowed">
           Enviar Avaliação
         </button>
+        @if (!(scoreA() && scoreB())) {
+          <p class="text-sm text-gray-600 text-center">
+            Selecione a pontuação das interfaces para enviar sua avaliação.
+          </p>
+        }
       </div>
     </div>
   } @else if (showContinueButton()) {
