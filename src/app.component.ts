@@ -8,6 +8,7 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { ClarityService } from './services/clarity.service';
 import { InterfaceFeedbackComponent } from './components/interface-feedback/interface-feedback.component';
 import { CreditFooterComponent } from './components/credit-footer/credit-footer.component';
+import { DonationDialogComponent } from './components/donation-dialog/donation-dialog.component';
 
 type AppState = 'Welcome' | 'Test1' | 'Feedback1' | 'Test2' | 'Feedback2' | 'Finished';
 
@@ -22,6 +23,7 @@ type AppState = 'Welcome' | 'Test1' | 'Feedback1' | 'Test2' | 'Feedback2' | 'Fin
     SuccessComponent,
     InterfaceFeedbackComponent,
     CreditFooterComponent,
+    DonationDialogComponent,
   ],
 })
 export class AppComponent implements OnInit {
