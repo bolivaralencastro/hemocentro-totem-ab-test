@@ -9,11 +9,11 @@
     <h1 class="text-3xl font-bold text-slate-800 mb-4">Próxima Etapa</h1>
   }
 
-  <p class="text-lg text-gray-600 leading-relaxed">{{ message() }}</p>
+  <p class="text-lg text-gray-600 leading-relaxed max-w-2xl">{{ message() }}</p>
 
   @if (timeA() !== null && timeB() !== null) {
     <div class="mt-8 pt-6 border-t border-gray-200 w-full">
-      <div class="grid grid-cols-3 gap-4 text-center">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
         <div>
           <div class="text-sm font-medium text-gray-500">Interface Original</div>
           <div class="text-2xl font-bold text-slate-800">{{ formattedTimeA() }}s</div>
@@ -36,50 +36,65 @@
       </div>
     </div>
   }
+
   @if (displayMode() === 'success') {
-    @if (originalScore() !== null || newScore() !== null) {
-      <div class="mt-8 pt-6 border-t border-gray-200 w-full">
-        <h2 class="text-xl font-bold text-slate-800 mb-6 text-center">Como você avaliou as interfaces</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          @if (originalScore() !== null) {
-            <div class="flex flex-col items-center gap-2">
-              <span class="text-lg font-medium text-gray-600">Interface Original</span>
-              <span class="text-sm text-gray-500">Tela com botões coloridos que ocupa a tela inteira.</span>
-              <div class="flex items-center gap-1 text-3xl">
-                @for (star of stars; track star) {
-                  <span [class.text-yellow-400]="(originalScore() ?? 0) >= star" [class.text-gray-300]="(originalScore() ?? 0) < star">★</span>
-                }
-              </div>
-              <span class="text-sm text-gray-500">{{ originalScore() }} de 5</span>
-            </div>
-          }
-          @if (newScore() !== null) {
-            <div class="flex flex-col items-center gap-2">
-              <span class="text-lg font-medium text-gray-600">Nova Interface</span>
-              <span class="text-sm text-gray-500">Tela centralizada com botões organizados em grade.</span>
-              <div class="flex items-center gap-1 text-3xl">
-                @for (star of stars; track star) {
-                  <span [class.text-yellow-400]="(newScore() ?? 0) >= star" [class.text-gray-300]="(newScore() ?? 0) < star">★</span>
-                }
-              </div>
-              <span class="text-sm text-gray-500">{{ newScore() }} de 5</span>
-            </div>
-          }
-        </div>
-      </div>
-    }
-    @if (showContinueButton()) {
-      <div class="mt-8 w-full flex flex-col items-center gap-4">
-        <button (click)="continueClicked.emit()" class="w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-10 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 text-lg">
-          {{ buttonText() }}
+    <div class="mt-10 w-full max-w-3xl bg-red-50 border border-red-100 rounded-2xl p-8 text-left shadow-sm">
+      <h2 class="text-2xl font-bold text-red-700 mb-3">Vamos transformar esse impacto em doação?</h2>
+      <p class="text-base text-red-900/80 leading-relaxed mb-6">
+        Você já ajudou a melhorar a experiência de doadores. Agora pode ajudar diretamente quem precisa de sangue. Clique abaixo
+        para encontrar um hemocentro perto de você.
+      </p>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+        <button type="button" (click)="openDonationDialog()" class="inline-flex items-center justify-center gap-2 bg-red-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200">
+          <span>Também quero doar!</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
         </button>
+        <p class="text-sm text-red-900/70">
+          Abriremos uma lista com hemocentros em diferentes cidades.
+        </p>
       </div>
-    }
-  } @else if (showContinueButton()) {
-    <div class="mt-8 w-full flex flex-col items-center gap-4">
-      <button (click)="continueClicked.emit()" class="w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-10 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 text-lg">
-        {{ buttonText() }}
-      </button>
     </div>
   }
 </div>
+
+@if (donationDialogVisible()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 px-4 py-6">
+    <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden">
+      <div class="flex items-start justify-between gap-4 px-6 py-5 border-b border-gray-200">
+        <div>
+          <h3 class="text-2xl font-semibold text-slate-800">Encontre o hemocentro mais próximo</h3>
+          <p class="text-sm text-gray-500">Escolha uma cidade para abrir o site oficial do hemocentro.</p>
+        </div>
+        <button type="button" (click)="closeDonationDialog()" class="text-gray-400 hover:text-gray-600 transition-colors" aria-label="Fechar lista de hemocentros">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="max-h-96 overflow-y-auto">
+        <ul class="divide-y divide-gray-200">
+          @for (center of donationCenters; track center.city) {
+            <li>
+              <a
+                [href]="center.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                (click)="onCenterClick(center)"
+                class="flex items-center justify-between gap-4 px-6 py-4 hover:bg-gray-50 transition-colors duration-150"
+              >
+                <div>
+                  <p class="font-semibold text-slate-800">{{ center.city }}</p>
+                  <p class="text-sm text-gray-500">{{ center.name }}</p>
+                </div>
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="px-6 py-4 bg-gray-50 text-right">
+        <button type="button" (click)="closeDonationDialog()" class="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+}
