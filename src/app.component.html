@@ -35,8 +35,8 @@
       @case ('Feedback1') {
         @if (lastCompletedInterface() === 'A') {
           <app-interface-feedback
-            title="Avalie a Interface Original"
-            helperText="Sua opinião é importante para melhorar esta versão."
+            title="Avalie a interface que acabou de testar"
+            helperText="Sua opinião é importante para continuarmos melhorando."
             continueLabel="Continuar para a próxima interface"
             [initialScore]="scoreA()"
             [initialComment]="feedbackA()"
@@ -44,8 +44,8 @@
           ></app-interface-feedback>
         } @else if (lastCompletedInterface() === 'B') {
           <app-interface-feedback
-            title="Avalie a Nova Interface"
-            helperText="Compartilhe como foi sua experiência com esta tela."
+            title="Avalie a interface que acabou de testar"
+            helperText="Compartilhe como foi sua experiência nesta etapa."
             continueLabel="Continuar para a próxima interface"
             [initialScore]="scoreB()"
             [initialComment]="feedbackB()"
@@ -65,7 +65,7 @@
       @case ('Feedback2') {
         @if (lastCompletedInterface() === 'B') {
           <app-interface-feedback
-            title="Avalie a Nova Interface"
+            title="Avalie a interface que acabou de testar"
             helperText="Conte o que funcionou bem ou o que poderia melhorar."
             continueLabel="Finalizar avaliação"
             [initialScore]="scoreB()"
@@ -74,8 +74,8 @@
           ></app-interface-feedback>
         } @else if (lastCompletedInterface() === 'A') {
           <app-interface-feedback
-            title="Avalie a Interface Original"
-            helperText="Sua percepção nos ajuda a evoluir esta versão."
+            title="Avalie a interface que acabou de testar"
+            helperText="Sua percepção nos ajuda a evoluir continuamente."
             continueLabel="Finalizar avaliação"
             [initialScore]="scoreA()"
             [initialComment]="feedbackA()"
