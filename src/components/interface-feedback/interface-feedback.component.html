@@ -31,7 +31,7 @@
       rows="4"
       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
       [value]="comment()"
-      (input)="onCommentChange(($event.target as HTMLTextAreaElement).value)"
+      (input)="onCommentChange($event)"
       placeholder="O que mais chamou sua atenção nesta interface?"
     ></textarea>
   </div>

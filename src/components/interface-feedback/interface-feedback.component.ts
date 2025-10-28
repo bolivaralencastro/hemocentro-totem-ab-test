@@ -34,8 +34,13 @@ export class InterfaceFeedbackComponent {
     this.score.set(value);
   }
 
-  onCommentChange(value: string): void {
-    this.comment.set(value);
+  onCommentChange(event: Event): void {
+    const target = event.target instanceof HTMLTextAreaElement ? event.target : null;
+    if (target === null) {
+      return;
+    }
+
+    this.comment.set(target.value);
   }
 
   onSubmit(): void {
