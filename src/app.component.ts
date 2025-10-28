@@ -4,7 +4,6 @@ import { VersionAComponent } from './components/version-a/version-a.component';
 import { VersionBComponent } from './components/version-b/version-b.component';
 import { SuccessComponent } from './components/success/success.component';
 import { DataLoggerService } from './services/data-logger.service';
-import { DonationInfoComponent } from './components/donation-info/donation-info.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { ClarityService } from './services/clarity.service';
 import { InterfaceFeedbackComponent } from './components/interface-feedback/interface-feedback.component';
@@ -20,7 +19,6 @@ type AppState = 'Welcome' | 'Test1' | 'Feedback1' | 'Test2' | 'Feedback2' | 'Fin
     VersionAComponent,
     VersionBComponent,
     SuccessComponent,
-    DonationInfoComponent,
     InterfaceFeedbackComponent,
   ],
 })
@@ -35,7 +33,6 @@ export class AppComponent implements OnInit {
   errorsTestB = signal<number | null>(null);
   isMobile = signal(false);
   testOrder = signal<'AB' | 'BA' | null>(null);
-  showSuccessInfo = signal(true);
   scoreA = signal<number | null>(null);
   scoreB = signal<number | null>(null);
   feedbackA = signal('');
@@ -94,8 +91,7 @@ export class AppComponent implements OnInit {
           viewName = this.testOrder() === 'AB' ? 'Feedback_VersionB' : 'Feedback_VersionA';
           break;
         case 'Finished':
-          // Differentiate between the final success message and the donation center list
-          viewName = this.showSuccessInfo() ? 'Finished_Success' : 'Finished_DonationInfo';
+          viewName = 'Finished_Success';
           break;
       }
       
@@ -121,7 +117,6 @@ export class AppComponent implements OnInit {
     this.feedbackA.set('');
     this.feedbackB.set('');
     this.lastCompletedInterface.set(null);
-    this.showSuccessInfo.set(true);
     this.currentTest.set('Test1');
   }
 
@@ -188,7 +183,6 @@ export class AppComponent implements OnInit {
     }
 
     this.currentTest.set('Finished');
-    this.showSuccessInfo.set(true);
     this.logSurveyResults();
   }
 
@@ -235,7 +229,4 @@ export class AppComponent implements OnInit {
     );
   }
 
-  onFindCenterClick(): void {
-    this.showSuccessInfo.set(false);
-  }
 }

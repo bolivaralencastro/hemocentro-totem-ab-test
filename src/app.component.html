@@ -91,24 +91,14 @@
       }
       @case ('Finished') {
         <div class="w-full max-w-lg mx-auto animate-fade-in bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden flex flex-col">
-          @if (showSuccessInfo()) {
-            <div class="border-b border-gray-200">
-              <app-success
-                title="Teste Concluído!"
-                message="Muito obrigado! Sua participação foi fundamental para aprimorar a experiência dos doadores de sangue."
-                [timeA]="timeTestA()"
-                [timeB]="timeTestB()"
-                [originalScore]="scoreA()"
-                [newScore]="scoreB()"
-                buttonText="Ver locais para doar sangue"
-                (continueClicked)="onFindCenterClick()">
-              </app-success>
-            </div>
-          } @else {
-            <div class="bg-gray-50">
-              <app-donation-info (findCenterClicked)="onFindCenterClick()"></app-donation-info>
-            </div>
-          }
+          <div class="border-b border-gray-200">
+            <app-success
+              title="Teste Concluído!"
+              message="Muito obrigado! Sua participação foi fundamental para aprimorar a experiência dos doadores de sangue."
+              [timeA]="timeTestA()"
+              [timeB]="timeTestB()">
+            </app-success>
+          </div>
         </div>
       }
     }
