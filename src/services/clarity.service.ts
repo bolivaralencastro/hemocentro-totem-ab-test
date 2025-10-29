@@ -91,6 +91,10 @@ export class ClarityService {
     }
   }
 
+  /**
+   * Verifica se a função de rastreamento do Clarity está disponível no objeto global.
+   * @returns `true` quando a função foi carregada e está pronta para uso.
+   */
   private isClarityAvailable(): boolean {
     if (!this.clarityEnabled || typeof window === 'undefined') {
       return false;
@@ -104,7 +108,7 @@ export class ClarityService {
       return undefined;
     }
 
-    return window.clarity as ClarityFunction;
+    return window.clarity;
   }
 
   private ensureClarityStub(): void {
