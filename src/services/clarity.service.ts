@@ -91,17 +91,20 @@ export class ClarityService {
     }
   }
 
+  private isClarityAvailable(): boolean {
+    if (!this.clarityEnabled || typeof window === 'undefined') {
+      return false;
+    }
+
+    return typeof window.clarity === 'function';
+  }
+
   private getClarityFunction(): ClarityFunction | undefined {
-    if (typeof window === 'undefined') {
+    if (!this.isClarityAvailable()) {
       return undefined;
     }
 
-    const clarity = window.clarity;
-    if (typeof clarity !== 'function') {
-      return undefined;
-    }
-
-    return clarity;
+    return window.clarity as ClarityFunction;
   }
 
   private ensureClarityStub(): void {
