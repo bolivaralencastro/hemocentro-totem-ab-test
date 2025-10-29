@@ -33,9 +33,7 @@
       }
     </div>
     <p class="text-sm text-gray-500">1 = muito ruim · 5 = excelente</p>
-    @if (score() !== null) {
-      <p class="text-sm font-medium text-slate-700">Você selecionou a nota {{ score() }}.</p>
-    } @else {
+    @if (score() === null) {
       <p class="text-sm text-gray-500">Toque nas estrelas para registrar sua avaliação.</p>
     }
   </div>

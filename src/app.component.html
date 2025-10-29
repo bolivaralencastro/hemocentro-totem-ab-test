@@ -34,8 +34,6 @@
         @if (lastCompletedInterface() === 'A') {
           <app-interface-feedback
             title="Como você avalia a interface que acabou de testar?"
-            description="Toque em uma estrela para escolher a nota e deixe um comentário curto, se quiser."
-            helperText="Leva poucos segundos e faz muita diferença."
             [initialScore]="scoreA()"
             [initialComment]="feedbackA()"
             (submitFeedback)="onFirstFeedbackSubmitted($event)"
