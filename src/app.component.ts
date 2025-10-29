@@ -65,6 +65,7 @@ export class AppComponent implements OnInit {
   });
 
   constructor() {
+    this.clarityService.initialize();
     this.trackClarityState();
   }
 
