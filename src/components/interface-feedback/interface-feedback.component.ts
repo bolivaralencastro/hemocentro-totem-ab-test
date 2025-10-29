@@ -9,7 +9,7 @@ export class InterfaceFeedbackComponent {
   title = input.required<string>();
   description = input<string>('');
   helperText = input<string>('');
-  continueLabel = input<string>('Continuar');
+  continueLabel = input<string>('Enviar e continuar');
   initialScore = input<number | null>(null);
   initialComment = input<string>('');
 

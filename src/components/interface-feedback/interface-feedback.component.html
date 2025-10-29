@@ -1,38 +1,54 @@
-<div class="w-full max-w-lg mx-auto bg-white rounded-2xl shadow-xl border border-gray-200 p-8 flex flex-col gap-6">
-  <div class="text-center flex flex-col gap-2">
-    <h1 class="text-3xl font-bold text-slate-800">{{ title() }}</h1>
+<div class="w-full max-w-xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-200 p-8 flex flex-col gap-8">
+  <div class="text-center flex flex-col gap-3">
+    <h1 class="text-3xl font-bold text-slate-900">{{ title() }}</h1>
     @if (description()) {
-      <p class="text-lg text-gray-600 leading-relaxed">{{ description() }}</p>
+      <p class="text-base text-gray-600 leading-relaxed">{{ description() }}</p>
     }
     @if (helperText()) {
       <p class="text-sm text-gray-500">{{ helperText() }}</p>
     }
   </div>
 
-  <div class="flex flex-col items-center gap-4">
-    <div class="flex items-center justify-center space-x-1 text-4xl">
+  <div class="flex flex-col items-center gap-5">
+    <p class="text-base font-medium text-slate-700">Escolha uma nota de 1 a 5</p>
+    <div class="flex items-center justify-center gap-3">
       @for (star of [1, 2, 3, 4, 5]; track star) {
         <button type="button"
                 (click)="setScore(star)"
-                class="transition-colors"
-                [class.text-yellow-400]="(score() ?? 0) >= star"
-                [class.text-gray-300]="(score() ?? 0) < star">
+                class="w-16 h-16 rounded-full border-2 flex items-center justify-center text-3xl font-semibold transition-all focus-visible:ring-4 focus-visible:ring-amber-200 focus:outline-none select-none"
+                [attr.aria-label]="'Nota ' + star"
+                [attr.aria-pressed]="(score() ?? 0) >= star"
+                [class.bg-amber-50]="(score() ?? 0) >= star"
+                [class.border-amber-400]="(score() ?? 0) >= star"
+                [class.text-amber-500]="(score() ?? 0) >= star"
+                [class.shadow-lg]="(score() ?? 0) >= star"
+                [class.bg-slate-50]="(score() ?? 0) < star"
+                [class.border-slate-200]="(score() ?? 0) < star"
+                [class.text-slate-400]="(score() ?? 0) < star"
+                [class.hover\:border-amber-300]="(score() ?? 0) < star"
+                [class.hover\:text-amber-400]="(score() ?? 0) < star"
+                [class.hover\:shadow-md]="(score() ?? 0) < star">
           ★
         </button>
       }
     </div>
-    <span class="text-sm text-gray-500">1 = Muito ruim · 5 = Excelente</span>
+    <p class="text-sm text-gray-500">1 = muito ruim · 5 = excelente</p>
+    @if (score() !== null) {
+      <p class="text-sm font-medium text-slate-700">Você selecionou a nota {{ score() }}.</p>
+    } @else {
+      <p class="text-sm text-gray-500">Toque nas estrelas para registrar sua avaliação.</p>
+    }
   </div>
 
   <div class="flex flex-col gap-2">
-    <label for="comment" class="text-lg font-medium text-gray-600 text-center">Deixe seus comentários</label>
+    <label for="comment" class="text-lg font-semibold text-slate-700">Quer contar um pouco mais? <span class="font-normal text-gray-500">(opcional)</span></label>
     <textarea
       id="comment"
       rows="4"
-      class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+      class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition disabled:opacity-60"
       [value]="comment()"
       (input)="onCommentChange($event)"
-      placeholder="O que mais chamou sua atenção nesta interface?"
+      placeholder="Compartilhe rapidamente o que te agradou ou o que poderia melhorar."
     ></textarea>
   </div>
 
@@ -40,13 +56,14 @@
     <button type="button"
             (click)="onSubmit()"
             [disabled]="!canSubmit()"
-            class="w-full bg-blue-600 text-white font-bold py-3 px-10 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 text-lg disabled:bg-gray-400 disabled:cursor-not-allowed">
-      {{ continueLabel() }}
+            class="w-full flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold py-3 px-10 rounded-xl shadow-lg transition-all duration-200 text-lg hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200 disabled:bg-blue-200 disabled:text-white disabled:cursor-not-allowed disabled:shadow-none">
+      <span>{{ continueLabel() }}</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 11-1.414-1.414L13.586 10H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+      </svg>
     </button>
     @if (!canSubmit()) {
-      <p class="text-sm text-gray-600 text-center">
-        Selecione uma pontuação para continuar.
-      </p>
+      <p class="text-sm text-gray-600 text-center">Escolha uma nota para liberar o envio.</p>
     }
   </div>
 </div>

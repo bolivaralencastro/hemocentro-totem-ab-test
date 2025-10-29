@@ -33,18 +33,18 @@
       @case ('Feedback1') {
         @if (lastCompletedInterface() === 'A') {
           <app-interface-feedback
-            title="Avalie a interface que acabou de testar"
-            helperText="Sua opinião é importante para continuarmos melhorando."
-            continueLabel="Continuar para a próxima interface"
+            title="Como você avalia a interface que acabou de testar?"
+            description="Toque em uma estrela para escolher a nota e deixe um comentário curto, se quiser."
+            helperText="Leva poucos segundos e faz muita diferença."
             [initialScore]="scoreA()"
             [initialComment]="feedbackA()"
             (submitFeedback)="onFirstFeedbackSubmitted($event)"
           ></app-interface-feedback>
         } @else if (lastCompletedInterface() === 'B') {
           <app-interface-feedback
-            title="Avalie a interface que acabou de testar"
-            helperText="Compartilhe como foi sua experiência nesta etapa."
-            continueLabel="Continuar para a próxima interface"
+            title="Como você avalia a interface que acabou de testar?"
+            description="Escolha a nota com um toque e conte rapidamente como foi."
+            helperText="Sua opinião ajuda a priorizar melhorias."
             [initialScore]="scoreB()"
             [initialComment]="feedbackB()"
             (submitFeedback)="onFirstFeedbackSubmitted($event)"
@@ -63,18 +63,18 @@
       @case ('Feedback2') {
         @if (lastCompletedInterface() === 'B') {
           <app-interface-feedback
-            title="Avalie a interface que acabou de testar"
-            helperText="Conte o que funcionou bem ou o que poderia melhorar."
-            continueLabel="Finalizar avaliação"
+            title="Como você avalia a interface que acabou de testar?"
+            description="Finalize dando sua nota e, se quiser, deixe um comentário curto."
+            helperText="Obrigado por chegar até aqui!"
             [initialScore]="scoreB()"
             [initialComment]="feedbackB()"
             (submitFeedback)="onSecondFeedbackSubmitted($event)"
           ></app-interface-feedback>
         } @else if (lastCompletedInterface() === 'A') {
           <app-interface-feedback
-            title="Avalie a interface que acabou de testar"
-            helperText="Sua percepção nos ajuda a evoluir continuamente."
-            continueLabel="Finalizar avaliação"
+            title="Como você avalia a interface que acabou de testar?"
+            description="Finalize dando sua nota e, se quiser, deixe um comentário curto."
+            helperText="Obrigado por chegar até aqui!"
             [initialScore]="scoreA()"
             [initialComment]="feedbackA()"
             (submitFeedback)="onSecondFeedbackSubmitted($event)"
