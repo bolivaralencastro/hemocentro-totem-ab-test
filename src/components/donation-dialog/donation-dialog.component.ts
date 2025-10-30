@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
 import { DonationDialogService } from '../../services/donation-dialog.service';
 import { DataLoggerService } from '../../services/data-logger.service';
 
@@ -12,7 +11,6 @@ interface DonationCenter {
 @Component({
   selector: 'app-donation-dialog',
   standalone: true,
-  imports: [NgIf, NgFor],
   templateUrl: './donation-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
