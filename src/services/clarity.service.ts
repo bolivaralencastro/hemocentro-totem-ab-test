@@ -66,11 +66,19 @@ export class ClarityService {
   }
 
   /**
-   * Sets a custom tag in Clarity. This is useful for segmenting recordings and heatmaps.
-   * For example, you can tag which version of the A/B test is being viewed or the current
-   * state of the application.
-   * @param key The name of the tag (e.g., 'current_view').
-   * @param value The value of the tag (e.g., 'Welcome', 'Test_VersionA').
+   * Verifica se o script de rastreamento do Clarity está disponível no objeto window.
+   * @returns {boolean} True se o Clarity estiver disponível, caso contrário, false.
+   */
+  private isClarityAvailable(): boolean {
+    return this.clarityEnabled && typeof window !== 'undefined' && typeof window.clarity === 'function';
+  }
+
+  /**
+   * Define uma tag personalizada no Clarity. Isso é útil para segmentar gravações e heatmaps.
+   * Por exemplo, você pode marcar qual versão de um teste A/B está sendo exibida ou o estado
+   * atual da aplicação.
+   * @param key O nome da tag (ex: 'current_view').
+   * @param value O valor da tag (ex: 'Welcome', 'Test_VersionA').
    */
   setCustomTag(key: string, value: string | string[]): void {
     if (!this.clarityEnabled) {
@@ -81,34 +89,13 @@ export class ClarityService {
       return;
     }
 
-    const clarity = this.getClarityFunction();
-    if (clarity) {
-      clarity('set', key, value);
+    if (this.isClarityAvailable()) {
+      window.clarity('set', key, value);
     } else {
-      // In a real production app, you might want more robust logging or handling.
-      // For this project, a console warning is sufficient if the script fails to load.
-      console.warn('Clarity tracking is not available. Could not set custom tag.');
+      // Em um aplicativo de produção real, você pode querer um log ou tratamento mais robusto.
+      // Para este projeto, um aviso no console é suficiente se o script não carregar.
+      console.warn('O rastreamento do Clarity não está disponível. Não foi possível definir a tag personalizada.');
     }
-  }
-
-  /**
-   * Verifica se a função de rastreamento do Clarity está disponível no objeto global.
-   * @returns `true` quando a função foi carregada e está pronta para uso.
-   */
-  private isClarityAvailable(): boolean {
-    if (!this.clarityEnabled || typeof window === 'undefined') {
-      return false;
-    }
-
-    return typeof window.clarity === 'function';
-  }
-
-  private getClarityFunction(): ClarityFunction | undefined {
-    if (!this.isClarityAvailable()) {
-      return undefined;
-    }
-
-    return window.clarity;
   }
 
   private ensureClarityStub(): void {

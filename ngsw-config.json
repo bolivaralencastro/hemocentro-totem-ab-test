@@ -1,0 +1,52 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/*.css",
+          "/*.js"
+        ]
+      },
+      "cacheConfig": {
+        "maxSize": 20,
+        "maxAge": "30d"
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "/*.(png|jpg|jpeg|svg|webp)"
+        ]
+      },
+      "cacheConfig": {
+        "maxSize": 50,
+        "maxAge": "30d"
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "clarity",
+      "urls": [
+        "https://www.clarity.ms/**"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 5,
+        "maxAge": "1d",
+        "timeout": "10s"
+      }
+    }
+  ]
+}
