@@ -66,14 +66,6 @@ export class ClarityService {
   }
 
   /**
-   * Verifica se o script de rastreamento do Clarity está disponível no objeto window.
-   * @returns {boolean} True se o Clarity estiver disponível, caso contrário, false.
-   */
-  private isClarityAvailable(): boolean {
-    return this.clarityEnabled && typeof window !== 'undefined' && typeof window.clarity === 'function';
-  }
-
-  /**
    * Define uma tag personalizada no Clarity. Isso é útil para segmentar gravações e heatmaps.
    * Por exemplo, você pode marcar qual versão de um teste A/B está sendo exibida ou o estado
    * atual da aplicação.
@@ -89,7 +81,7 @@ export class ClarityService {
       return;
     }
 
-    if (this.isClarityAvailable()) {
+    if (typeof window !== 'undefined' && typeof window.clarity === 'function') {
       window.clarity('set', key, value);
     } else {
       // Em um aplicativo de produção real, você pode querer um log ou tratamento mais robusto.
